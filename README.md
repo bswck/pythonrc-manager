@@ -2,7 +2,8 @@
 Python REPL RC manager that records reloadable imports
 
 # Features
-* scoped RC files (write a custom Python RC file per project)
+* global Python RC with common setup and delegation to scoped RC scripts (see next point)
+* project-scoped RC scripts (write a custom Python RC file per project)
 * RCE guards (initially based on `git check-ignore`, which is an imperfect heuristic for many reasons)
 * `reloadable():` context manager
 * `reload()` REPL function based on diffs of `sys.modules` snapshots from imports in `reloadable()` sections
