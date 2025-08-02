@@ -102,7 +102,7 @@ def clean_module_cache() -> None:
 
 def set_last_value(value: object) -> None:
     """Set the last value in the REPL to the given value."""
-    builtins._ = value
+    builtins._ = value  # type: ignore[attr-defined]
 
 
 class DisplayHookPatcher:
