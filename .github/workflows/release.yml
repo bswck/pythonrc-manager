@@ -23,6 +23,8 @@ jobs:
 
     name: Release to PyPI
     runs-on: ubuntu-latest
+    environment: pypi
+
     permissions:
       id-token: write
       contents: write
