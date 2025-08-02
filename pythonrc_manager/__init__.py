@@ -128,7 +128,7 @@ class DisplayHookPatcher:
         if not hasattr(self, "original_hook"):
             msg = "DisplayHookPatcher is not started. Call start() first."
             raise RuntimeError(msg)
-        if self.active:
+        if self.active and not sys.exception():
             if obj is not None:
                 self.printer(obj)
                 set_last_value(obj)
