@@ -85,7 +85,7 @@ def init_rc_script(
     rc_path: StrPath,
     global_ns: dict[str, object],
 ) -> None:
-    global_ns.update(execute_rc_script(rc_path, global_ns))
+    execute_rc_script(rc_path, global_ns)
     global_ns["reload"] = reload_function(rc_path, global_ns)
 
 
