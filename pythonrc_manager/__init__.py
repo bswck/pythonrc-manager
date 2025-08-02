@@ -68,20 +68,25 @@ def reload_function(
 def execute_rc_script(
     rc_path: StrPath,
     global_ns: dict[str, object],
-) -> dict[str, object]:
+) -> None:
     rc_path = os.fspath(rc_path)
     # security: lock the file between check-ignore and run_path?
     git_check_ignore(rc_path)
-    return runpy.run_path(rc_path, global_ns)
+    global_ns.update(
+        runpy.run_path(
+            rc_path,
+            init_globals=global_ns,
+            run_name="__main__",
+        )
+    )
 
 
 def init_rc_script(
     rc_path: StrPath,
     global_ns: dict[str, object],
-) -> dict[str, object]:
-    new_globals = execute_rc_script(rc_path, global_ns)
-    new_globals["reload"] = reload_function(rc_path, new_globals)
-    return new_globals
+) -> None:
+    global_ns.update(execute_rc_script(rc_path, global_ns))
+    global_ns["reload"] = reload_function(rc_path, global_ns)
 
 
 def clean_module_cache() -> None:
