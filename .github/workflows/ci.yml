@@ -11,8 +11,6 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
-  FORCE_COLOR: 1
-  PY_COLORS: 1
   UV_LOCKED: 1
   UV_NO_SYNC: 1
 
@@ -27,6 +25,8 @@ jobs:
     runs-on: ${{ matrix.platform }}
 
     env:
+      FORCE_COLOR: 1
+      PY_COLORS: 1
       UV_PYTHON: ${{ matrix.version }}
 
     strategy:
