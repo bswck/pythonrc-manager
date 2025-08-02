@@ -1,4 +1,8 @@
 # pythonrc-manager (wip)
+
+> [!warning]
+> Don't use this yet, I'm getting the alpha version ready
+
 Python REPL RC manager that records reloadable imports
 
 # Features
