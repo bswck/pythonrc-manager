@@ -49,6 +49,10 @@ def allow_reload() -> Generator[None]:
         # before the exception.
         after = set(sys.modules)
         MODULES_TO_RELOAD.update(after - before)
+        MODULES_TO_RELOAD.difference_update(
+            sys.builtin_module_names,
+            sys.stdlib_module_names,
+        )
 
 
 MODULES_TO_RELOAD: set[str] = set()
