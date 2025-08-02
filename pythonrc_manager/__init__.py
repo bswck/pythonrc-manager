@@ -64,6 +64,7 @@ def reload_function(
 ) -> Callable[[], None]:
     def reload() -> None:
         clean_module_cache()
+        set_last_value(None)
         execute_rc_script(rc_path, new_globals)
 
     return reload
@@ -99,6 +100,11 @@ def clean_module_cache() -> None:
         sys.modules.pop(module_name, None)
 
 
+def set_last_value(value: object) -> None:
+    """Set the last value in the REPL to the given value."""
+    builtins._ = value
+
+
 class DisplayHookPatcher:
     original_hook: Callable[[object], None]
 
@@ -114,7 +120,7 @@ class DisplayHookPatcher:
 
     def start(self) -> None:
         """Set up the display hook patcher."""
-        builtins.__dict__.setdefault("_")
+        set_last_value(None)
         self.original_hook = sys.displayhook
         sys.displayhook = self
 
@@ -125,6 +131,6 @@ class DisplayHookPatcher:
         if self.active:
             if obj is not None:
                 self.printer(obj)
-                builtins._ = obj  # type: ignore[attr-defined]
+                set_last_value(None)
         else:
             self.original_hook(obj)
