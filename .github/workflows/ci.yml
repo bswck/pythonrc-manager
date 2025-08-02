@@ -1,0 +1,69 @@
+name: ci
+
+on:
+  push:
+    branches: ['main', 'test-me-*']
+    tags: ['v*']
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  FORCE_COLOR: 1
+  PY_COLORS: 1
+  UV_LOCKED: 1
+  UV_NO_SYNC: 1
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  check:
+    if: ${{ github.actor != 'dependabot[bot]' && !cancelled() }}
+    name: ${{ matrix.version }} ${{matrix.platform}}
+    runs-on: ${{ matrix.platform }}
+
+    env:
+      UV_PYTHON: ${{ matrix.version }}
+
+    strategy:
+      fail-fast: false
+      # https://blog.jaraco.com/efficient-use-of-ci-resources/
+      matrix:
+        version: ['3.13']
+        platform: [ubuntu-latest, windows-latest]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - uses: astral-sh/setup-uv@v6
+      with:
+        enable-cache: true
+
+    - name: Install
+      id: install
+      run: uv sync
+
+    - name: Run unit tests
+      run: uv run pytest -vv
+      if: ${{ !cancelled() && steps.install.conclusion == 'success' }}
+
+    - name: Check formatting
+      id: formatting
+      run: uv run ruff format . --diff
+      if: ${{ !cancelled() && steps.install.conclusion == 'success' }}
+
+    - name: Lint
+      id: linting
+      run: uv run ruff check --output-format github
+      if: ${{ !cancelled() && steps.install.conclusion == 'success' }}
+
+    - name: Check type safety
+      id: types
+      run: uv run mypy .
+      if: ${{ !cancelled() && steps.install.conclusion == 'success' }}
