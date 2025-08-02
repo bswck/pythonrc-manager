@@ -90,8 +90,10 @@ def init_rc_script(
     rc_path: StrPath,
     global_ns: dict[str, object],
 ) -> None:
-    execute_rc_script(rc_path, global_ns)
-    global_ns["reload"] = reload_function(rc_path, global_ns)
+    try:
+        execute_rc_script(rc_path, global_ns)
+    finally:
+        global_ns["reload"] = reload_function(rc_path, global_ns)
 
 
 def clean_module_cache() -> None:
