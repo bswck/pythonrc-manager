@@ -131,6 +131,6 @@ class DisplayHookPatcher:
         if self.active:
             if obj is not None:
                 self.printer(obj)
-                set_last_value(None)
+                set_last_value(obj)
         else:
             self.original_hook(obj)
