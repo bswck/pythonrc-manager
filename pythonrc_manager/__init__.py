@@ -139,10 +139,8 @@ class DisplayHookPatcher:
 
 
 def generate_stub_for_pythonstartup(out_dir: StrPath | None = None) -> bool:
-    link = False
-    if out_dir is None:
-        out_dir = os.path.dirname(os.fspath(out_dir) if out_dir else __file__)
-        link = True
+    link = out_dir is None
+    out_dir = os.path.dirname(os.fspath(out_dir) if out_dir else __file__)
 
     startup_file = os.environ["PYTHONSTARTUP"]
 
