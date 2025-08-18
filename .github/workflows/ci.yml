@@ -98,7 +98,7 @@ jobs:
         run: |
           set -CETeuxo pipefail
 
-          project_version=v$(uv version --short)
+          project_version=v$(uvx --with hatch-vcs hatchling version)
           tag=${GITHUB_REF#refs/tags/}
 
           [[ "$tag" == "$project_version" ]] || {

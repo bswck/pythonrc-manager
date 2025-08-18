@@ -749,7 +749,6 @@ wheels = [
 
 [[package]]
 name = "pythonrc-manager"
-version = "0.1.9"
 source = { editable = "." }
 
 [package.dev-dependencies]
