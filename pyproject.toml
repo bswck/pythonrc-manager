@@ -121,4 +121,8 @@ ignore = [
     # Description: Private member accessed
     # Rationale: In reality, this check causes more trouble than prevents bad things
     "SLF001",
+
+    # Description: Pathlib lints
+    # Rationale: Pathlib is intentionally not used
+    "PTH",
 ]
