@@ -40,7 +40,7 @@ def git_root() -> str:
 
 
 def project_rc_path(basename: str = PYTHONRC_BASENAME) -> str:
-    return os.path.relpath(os.path.join(git_root(), basename))
+    return os.path.relpath(os.path.join(git_root(), basename), start=git_root())
 
 
 @contextmanager
