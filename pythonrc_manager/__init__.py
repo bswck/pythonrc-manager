@@ -23,6 +23,10 @@ if _git_bin is None:
 GIT_BIN_PATH = _git_bin
 
 
+def restart() -> None:
+    os.execvpe(sys.executable, sys.orig_argv, os.environ)  # noqa: S606
+
+
 def git_check_ignore(rc_path: StrPath) -> None:
     rc_path = os.fspath(rc_path)
     subprocess.check_output([GIT_BIN_PATH, "-C", git_root(), "check-ignore", rc_path])
