@@ -39,8 +39,12 @@ def git_root() -> str:
     ).strip()
 
 
-def project_rc_path(basename: str = PYTHONRC_BASENAME) -> str:
-    return os.path.relpath(os.path.join(git_root(), basename), start=git_root())
+def project_rc_path(basename: str = PYTHONRC_BASENAME) -> str | None:
+    try:
+        root = os.path.join(git_root(), basename)
+    except subprocess.CalledProcessError:
+        return None
+    return os.path.relpath(root, start=git_root())
 
 
 @contextmanager
