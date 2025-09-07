@@ -146,28 +146,7 @@ class DisplayHookPatcher:
             self.original_hook(obj)
 
 
-def generate_stub_for_pythonstartup(out_dir: StrPath | None = None) -> bool:
-    link = out_dir is None
+def link_pythonstartup(out_dir: StrPath | None = None) -> None:
     out_dir = os.path.dirname(os.fspath(out_dir) if out_dir else __file__)
-
     startup_file = os.environ["PYTHONSTARTUP"]
-
-    try:
-        from mypy import stubgen  # noqa: PLC0415
-    except ImportError:
-        return False
-
-    stubgen.main(
-        [
-            startup_file,
-            "--output",
-            out_dir,
-            "--ignore-errors",
-            "--no-import",
-            "--parse-only",
-            "--include-private",
-        ]
-    )
-    if link:
-        os.symlink(startup_file, os.path.join(out_dir, os.path.basename(startup_file)))
-    return True
+    os.symlink(startup_file, os.path.join(out_dir, os.path.basename(startup_file)))
