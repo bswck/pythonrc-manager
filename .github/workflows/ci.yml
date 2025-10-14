@@ -102,7 +102,8 @@ jobs:
           tag=${GITHUB_REF#refs/tags/}
 
           [[ "$tag" == "$project_version" ]] || {
-            echo "Tag $tag does not match project version $project_version"
+            echo "Tag $tag does not match project version $project_version."
+            echo "Did you properly bump the version / set up dynamic versioning?"
             exit 1
           }
 
